@@ -89,8 +89,8 @@ const Formulario = ({ setShowForm, setExito }) => {
                 <ColorBorderTextField type="text" label="Institución" llave="institucion" required />
                 <ColorBorderTextField type="text" label="Servicio" llave="servicio" required />
                 <DropdownFilter data={Tipos} llave="tipo" placeholder="Tipo" />
-                <ColorBorderTextField type="text" label="Detalle el incidente" llave="fall" required />
-                <ColorBorderTextField type="text" label="Nombre de Reprecentante" llave="reporter" required />
+                <ColorBorderTextField type="text" label="Detalle el Incidente" llave="fall" required />
+                <ColorBorderTextField type="text" label="Nombre de Representante" llave="reporter" required />
                 <ColorBorderTextField type="text" label="Nombre de Contacto" llave="contacto" required />
                 <ColorBorderTextField type="tel" label="N° Celular de Contacto" llave="celular" pattern="[9][0-9]{8}" required />
                 <ColorBorderTextField type="email" label="E-mail de Contacto" llave="email" />
