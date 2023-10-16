@@ -5,7 +5,10 @@ import { TailSpin } from "react-loader-spinner"
 import { useState } from "react"
 import styled from "styled-components"
 import Tipos from "../data/tipo.json"
+import Servicios from "../data/servicios.json"
+import Instituciones from "../data/instituciones.json"
 import { Button } from "@mui/material"
+import Users from "../data/users.json"
 
 const FormContainer = styled.div`
   position: relative;
@@ -47,7 +50,7 @@ const Formulario = ({ setShowForm, setExito }) => {
                 "SERVICIO": state.servicio,
                 "TIPO": state.tipo,
                 "FALL": state.fall,
-                "REPORTER": state.reporter,
+                "REPORTER": Users.find(user => user.id === state.currentUserId).name,
                 "CONTACTO": state.contacto,
                 "CELULAR": state.celular,
                 "CORREO": state.email,
@@ -86,11 +89,10 @@ const Formulario = ({ setShowForm, setExito }) => {
     return (
         <FormContainer>
             <InputForm onSubmit={handleAddData}>
-                <ColorBorderTextField type="text" label="Institución" llave="institucion" required />
-                <ColorBorderTextField type="text" label="Servicio" llave="servicio" required />
+                <DropdownFilter data={Instituciones} llave="institucion" placeholder="Institución" />
+                <DropdownFilter data={Servicios} llave="servicio" placeholder="Servicio" />
                 <DropdownFilter data={Tipos} llave="tipo" placeholder="Tipo" />
                 <ColorBorderTextField type="text" label="Detalle el Incidente" llave="fall" required />
-                <ColorBorderTextField type="text" label="Nombre de Representante" llave="reporter" required />
                 <ColorBorderTextField type="text" label="Nombre de Contacto" llave="contacto" required />
                 <ColorBorderTextField type="tel" label="N° Celular de Contacto" llave="celular" pattern="[9][0-9]{8}" required />
                 <ColorBorderTextField type="email" label="E-mail de Contacto" llave="email" />
