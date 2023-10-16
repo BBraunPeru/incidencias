@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useAppContext } from "../ContexProvider";
 import { useEffect, useState } from "react";
+import Users from "../data/users.json";
 
 const FloatingButton = styled.button`
     position: fixed;
@@ -48,6 +49,8 @@ const HomeI = () => {
 
     const [state, setState] = useAppContext()
     const [searchTerm, setSearchTerm] = useState('');
+    const currentUser = Users.find(user => user.id === state.currentUserId)
+    console.log(currentUser.name)
 
     useEffect(() => {
         if (!state.fetchComplete) {
@@ -78,7 +81,26 @@ const HomeI = () => {
         return <p>Cargando datos...</p>;
     }
 
-    const datosInvertidos = [...datos].reverse().filter(fila => fila.INSTITUCION.toLowerCase().includes(searchTerm.toLowerCase())); 
+    const datosInvertidos = [...datos].reverse().filter(fila => fila.INSTITUCION.toLowerCase().includes(searchTerm.toLowerCase()));
+
+    let datosFiltrados;
+    if (currentUser.roll === "representante") {
+        datosFiltrados = [...datosInvertidos].filter(fila => currentUser.name.toLocaleLowerCase() === fila.REPORTER.toLocaleLowerCase())
+
+    }
+    else if (currentUser.roll === "tecnico") {
+        datosFiltrados = [...datosInvertidos].filter(fila => {
+            if (fila.RESPONSABLE) {
+              return currentUser.name.toLowerCase() === fila.RESPONSABLE.toLowerCase();
+            }
+            return false; // Si fila.RESPONSABLE es nulo, excluimos esta fila
+          });
+          
+    }
+    else {
+        datosFiltrados = [...datosInvertidos]
+    }
+    // const datosFiltrados = [...datosInvertidos]
     const cabeceras = Object.keys(datos[0])
     const handleSwitch = (e) => {
         navigate("/add")
@@ -87,20 +109,21 @@ const HomeI = () => {
     return (
 
         <ContainerIncidencias >
-            <input 
-            type="text" 
-            placeholder="Buscar por institución..." 
-            onChange={event => setSearchTerm(event.target.value)} 
-            style={{
-                padding:"0 1rem",
-                height:"3.5rem",
-                width:"100%",
-                fontSize:"16px",
-                borderRadius:".4rem",
-                border:"none",
-                boxSizing:"border-box"}} />
+            <input
+                type="text"
+                placeholder="Buscar por institución..."
+                onChange={event => setSearchTerm(event.target.value)}
+                style={{
+                    padding: "0 1rem",
+                    height: "3.5rem",
+                    width: "100%",
+                    fontSize: "16px",
+                    borderRadius: ".4rem",
+                    border: "none",
+                    boxSizing: "border-box"
+                }} />
             {
-                datosInvertidos.map((fila, i) => {
+                datosFiltrados.map((fila, i) => {
                     return (
                         <Incidente key={i}
                             institucion={fila.INSTITUCION}

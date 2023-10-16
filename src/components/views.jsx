@@ -1,5 +1,4 @@
 import { styled } from "styled-components";
-import { Colors } from "../colors";
 
 export const InputForm = styled.form`
     display: flex;

@@ -1,0 +1,282 @@
+[
+    {
+        "id": 1,
+        "name": "HERRERA SANCHEZ, MONICA ESTHER",
+        "username": "monica",
+        "password": "herrmope",
+        "roll": "representante"
+    },
+    {
+        "id": 2,
+        "name": "CELIS CELIS, PATRICIA DEL ROCIO",
+        "username": "patricia",
+        "password": "celipape",
+        "roll": "representante"
+    },
+    {
+        "id": 3,
+        "name": "VERASTEGUI PIMENTEL, MILAGROS",
+        "username": "milagros",
+        "password": "veramipe",
+        "roll": "representante"
+    },
+    {
+        "id": 4,
+        "name": "HUAPAYA TICSE, JOSELYN CONSUELO",
+        "username": "joselyn",
+        "password": "huapjope",
+        "roll": "representante"
+    },
+    {
+        "id": 5,
+        "name": "RAZZETO CORTEGANA, AHILYN ESTHER",
+        "username": "ahilyn",
+        "password": "razzahpe",
+        "roll": "representante"
+    },
+    {
+        "id": 6,
+        "name": "PAJITA CAPCHA, VICKY ROCIO",
+        "username": "vicky",
+        "password": "pajirope",
+        "roll": "representante"
+    },
+    {
+        "id": 7,
+        "name": "GOMEZ SAAVEDRA, ABRAHAM",
+        "username": "abraham",
+        "password": "gomeabpe",
+        "roll": "representante"
+    },
+    {
+        "id": 8,
+        "name": "VELASQUEZ CHALCO, JESSICA",
+        "username": "jessica",
+        "password": "velajepe",
+        "roll": "representante"
+    },
+    {
+        "id": 9,
+        "name": "ALANYA PAREDES, KATERINE CRIS",
+        "username": "katerine",
+        "password": "alankape",
+        "roll": "representante"
+    },
+    {
+        "id": 10,
+        "name": "GALINDO CAMACHO, RENZO MARTIN",
+        "username": "renzo",
+        "password": "galirepe",
+        "roll": "representante"
+    },
+    {
+        "id": 11,
+        "name": "VILLAVICENCIO AREVALO, CARLOS",
+        "username": "carlos",
+        "password": "villcape",
+        "roll": "representante"
+    },
+    {
+        "id": 12,
+        "name": "BALAREZO SILVA, OMAR WILFREDO",
+        "username": "omar",
+        "password": "balaompe",
+        "roll": "representante"
+    },
+    {
+        "id": 13,
+        "name": "FERNANDEZ DONAYRE, VANESSA ROSARIO",
+        "username": "vanessa",
+        "password": "fernvape",
+        "roll": "representante"
+    },
+    {
+        "id": 14,
+        "name": "HUARANCA VENEGAS, PERCY OSCAR",
+        "username": "percy",
+        "password": "huarpepe",
+        "roll": "representante"
+    },
+    {
+        "id": 15,
+        "name": "DE ALMEIDA NUÑEZ, PEDRO ANTONIO",
+        "username": "pedro",
+        "password": "dealpepe",
+        "roll": "representante"
+    },
+    {
+        "id": 16,
+        "name": "OLIVARES HERRERA, MELIK JEANNET",
+        "username": "melik",
+        "password": "olivmepe",
+        "roll": "representante"
+    },
+    {
+        "id": 17,
+        "name": "MUJICA SANCHEZ, MILAGROS MALENA",
+        "username": "milagros",
+        "password": "mujimipe",
+        "roll": "representante"
+    },
+    {
+        "id": 18,
+        "name": "CUBAS CASANA, HECTOR",
+        "username": "hector",
+        "password": "cubahepe",
+        "roll": "representante"
+    },
+    {
+        "id": 19,
+        "name": "WONG ALTAMIRANO, SHEYLA AGNES",
+        "username": "sheyla",
+        "password": "wongshpe",
+        "roll": "representante"
+    },
+    {
+        "id": 20,
+        "name": "ARRASCUE ARMESTAR, JOSE RICARDO",
+        "username": "jose",
+        "password": "arraripe",
+        "roll": "representante"
+    },
+    {
+        "id": 21,
+        "name": "CARMEN LOZANO, JACKLYN JOHANA",
+        "username": "jacklyn",
+        "password": "carmjkpe",
+        "roll": "representante"
+    },
+    {
+        "id": 22,
+        "name": "AGUIRRE MORALES, MADELEINE ROCIO",
+        "username": "madeleine",
+        "password": "aguimdpe",
+        "roll": "representante"
+    },
+    {
+        "id": 23,
+        "name": "MENDOZA LOPEZ, NILTON CESAR",
+        "username": "nilton",
+        "password": "mendnipe",
+        "roll": "representante"
+    },
+    {
+        "id": 24,
+        "name": "HIJAR BELLIDO, PAOLA ANDREA",
+        "username": "paola",
+        "password": "hijapape",
+        "roll": "representante"
+    },
+    {
+        "id": 25,
+        "name": "SALAZAR ESPINOZA, PILAR",
+        "username": "pilar",
+        "password": "salapipe",
+        "roll": "representante"
+    },
+    {
+        "id": 26,
+        "name": "REATEGUI REQUEJO, RUBI ROUSE",
+        "username": "rubi",
+        "password": "reatrupe",
+        "roll": "representante"
+    },
+    {
+        "id": 27,
+        "name": "AGUADO MUNGUIA, EVELYN GRACIELA",
+        "username": "evelyn",
+        "password": "aguaevpe",
+        "roll": "representante"
+    },
+    {
+        "id": 28,
+        "name": "BOLAÑOS SOTOMAYOR, CARMEN AIXA",
+        "username": "carmen",
+        "password": "bolacape",
+        "roll": "representante"
+    },
+    {
+        "id": 29,
+        "name": "GAYOSO GARCIA, JUAN RICARDO",
+        "username": "juan",
+        "password": "gayojupe",
+        "roll": "representante"
+    },
+    {
+        "id": 30,
+        "name": "NORIEGA GUEVARA, RUBEN FABRIZIO",
+        "username": "ruben",
+        "password": "norifape",
+        "roll": "representante"
+    },
+    {
+        "id": 31,
+        "name": "MATUMAY ESPICHAN, JEIMY RUTH",
+        "username": "jeimy",
+        "password": "matujepe",
+        "roll": "representante"
+    },
+    {
+        "id": 32,
+        "name": "ZAMBRANO HOSPINA, ANDREA",
+        "username": "andrea",
+        "password": "zambadpe",
+        "roll": "representante"
+    },
+    {
+        "id": 33,
+        "name": "SARAVIA BERMUDEZ, GLADYS ELVA",
+        "username": "gladys",
+        "password": "saraglpe",
+        "roll": "representante"
+    },
+    {
+        "id": 34,
+        "name": "GARCIA CASTRO, EZEQUIEL",
+        "username": "ezequiel",
+        "password": "garcezpe",
+        "roll": "representante"
+    },
+    {
+        "id": 35,
+        "name": "GARCIA GUARNIZ, ALDO IVAN",
+        "username": "aldo",
+        "password": "garcalpe",
+        "roll": "tecnico"
+    },
+    {
+        "id": 36,
+        "name": "CABANILLAS JUAREZ, ELIAS WILDER",
+        "username": "elias",
+        "password": "cabaelpe",
+        "roll": "tecnico"
+    },
+    {
+        "id": 37,
+        "name": "SANCHEZ PACHAS, RAUL WILLIAM",
+        "username": "raul",
+        "password": "sancrupe",
+        "roll": "tecnico"
+    },
+    {
+        "id": 38,
+        "name": "MANSILLA ACOSTA, EDMUNDO MARTIN",
+        "username": "edmundo",
+        "password": "mansepe",
+        "roll": "tecnico"
+    },
+    {
+        "id": 39,
+        "name": "VASQUEZ LLAXSAN, NICOLAI",
+        "username": "nicolai",
+        "password": "vallape",
+        "roll": "tecnico"
+    },
+    {
+        "id": 40,
+        "name": "ADMIN",
+        "username": "admin",
+        "password": "bb@peme7",
+        "roll": "admin"
+    }
+]
