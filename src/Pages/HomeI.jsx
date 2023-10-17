@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useAppContext } from "../ContexProvider";
 import { useEffect, useState } from "react";
-import Users from "../data/users.json";
 
 const FloatingButton = styled.button`
     position: fixed;
@@ -49,7 +48,8 @@ const HomeI = () => {
 
     const [state, setState] = useAppContext()
     const [searchTerm, setSearchTerm] = useState('');
-    const currentUser = Users.find(user => user.id === state.currentUserId)
+    const objetCurrentUser = localStorage.getItem("currentUser");
+    const currentUser = JSON.parse(objetCurrentUser); 
     console.log(currentUser.name)
 
     useEffect(() => {
@@ -146,7 +146,11 @@ const HomeI = () => {
                 })
             }
 
-            <FloatingButton style={{ scale: "1.5" }} onClick={handleSwitch}>+</FloatingButton>
+            {
+                currentUser.roll !== "tecnico" && (
+                    <FloatingButton style={{ scale: "1.5" }} onClick={handleSwitch}>+</FloatingButton>
+                )
+            }
         </ContainerIncidencias>
     )
 

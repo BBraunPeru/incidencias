@@ -3,7 +3,6 @@ import { Button, TextField, Typography, Avatar, Modal } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import styled from 'styled-components';
 import Users from "../data/users.json"
-import { useAppContext } from '../ContexProvider';
 import { useNavigate } from 'react-router-dom';
 
 
@@ -26,7 +25,6 @@ const Aut = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [errorPopupOpen, setErrorPopupOpen] = useState(false);
-    const [state, setState] = useAppContext()
 
     const navigate = useNavigate()
 
@@ -53,10 +51,15 @@ const Aut = () => {
         const result = autenticarUsuario(username, password);
         if (result.success) {
             // Autenticación exitosa, establece el "id" del usuario autenticado.
-            setState({
-                ...state,
-                currentUserId:result.userId
-            })
+            const currentUser = JSON.stringify(Users.find(user => user.id === result.userId));
+
+            // Guardar la cadena JSON en el localStorage con una clave específica
+            localStorage.setItem('currentUser', currentUser);
+
+            // setState({
+            //     ...state,
+            //     currentUserId: result.userId
+            // })
 
             console.log('Autenticación exitosa para el usuario con ID:', result.userId);
             navigate('/home')

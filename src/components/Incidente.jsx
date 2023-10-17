@@ -25,6 +25,7 @@ const Title = styled.p`
     font-weight: bold;
     text-align: center;
     margin: 0rem;
+    cursor: pointer;
 `;
 
 const Detalle = styled.p`

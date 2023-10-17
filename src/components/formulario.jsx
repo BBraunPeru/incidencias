@@ -1,8 +1,8 @@
-import { ColorBorderTextField, DropdownFilter} from "./elements"
+import { ColorBorderTextField, DropdownFilter } from "./elements"
 import { InputForm } from "./views"
 import { useAppContext } from "../ContexProvider"
 import { TailSpin } from "react-loader-spinner"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import styled from "styled-components"
 import Tipos from "../data/tipo.json"
 import Servicios from "../data/servicios.json"
@@ -33,6 +33,16 @@ const Formulario = ({ setShowForm, setExito }) => {
     // eslint-disable-next-line
     const [state, setState] = useAppContext()
     const [loading, setLoading] = useState(false);
+    const [showReporter, setShowReporter] = useState(false);
+    const objetCurrentUser = localStorage.getItem("currentUser");
+    const currentUser = JSON.parse(objetCurrentUser); 
+    let Reporters = Users.filter((user) => user.roll === 'representante').map((rep) => rep.name);
+    useEffect(() => {
+        if (currentUser.roll === 'admin') {
+            setShowReporter(true);
+        }
+    }, [currentUser.roll]);
+
 
     const handleAddData = (e) => {
         e.preventDefault();
@@ -50,7 +60,7 @@ const Formulario = ({ setShowForm, setExito }) => {
                 "SERVICIO": state.servicio,
                 "TIPO": state.tipo,
                 "FALL": state.fall,
-                "REPORTER": Users.find(user => user.id === state.currentUserId).name,
+                "REPORTER": showReporter ? state.reporter : currentUser.name,
                 "CONTACTO": state.contacto,
                 "CELULAR": state.celular,
                 "CORREO": state.email,
@@ -83,20 +93,27 @@ const Formulario = ({ setShowForm, setExito }) => {
 
         console.log("agreganddo data")
     };
-    
+
 
 
     return (
         <FormContainer>
             <InputForm onSubmit={handleAddData}>
-                <DropdownFilter data={Instituciones} llave="institucion" placeholder="Institución" />
-                <DropdownFilter data={Servicios} llave="servicio" placeholder="Servicio" />
-                <DropdownFilter data={Tipos} llave="tipo" placeholder="Tipo" />
+                <DropdownFilter data={Instituciones} llave="institucion" placeholder="Institución" required />
+                <DropdownFilter data={Servicios} llave="servicio" placeholder="Servicio" required />
+                <DropdownFilter data={Tipos} llave="tipo" placeholder="Tipo" required />
                 <ColorBorderTextField type="text" label="Detalle el Incidente" llave="fall" required />
+                {
+                    showReporter && (
+                        <DropdownFilter data={Reporters} llave="reporter" placeholder="Reprecentante" required />
+                    )
+
+
+                }
                 <ColorBorderTextField type="text" label="Nombre de Contacto" llave="contacto" required />
                 <ColorBorderTextField type="tel" label="N° Celular de Contacto" llave="celular" pattern="[9][0-9]{8}" required />
                 <ColorBorderTextField type="email" label="E-mail de Contacto" llave="email" />
-                <Button type="submit" variant="contained" sx={{marginTop:"1rem",padding:"1rem", fontWeight:"bold"}} >Agregar</Button>
+                <Button type="submit" variant="contained" sx={{ marginTop: "1rem", padding: "1rem", fontWeight: "bold" }} >Agregar</Button>
                 {loading && (
                     <SpinnerOverlay>
                         <TailSpin

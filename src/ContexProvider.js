@@ -14,8 +14,7 @@ export const MyProvider = ({ children }) => {
     celular: "",
     email: "",
     fetchComplete:false,
-    datos:null,
-    currentUserId:null
+    datos:null
   });
 
   return (

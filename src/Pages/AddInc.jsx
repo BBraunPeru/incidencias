@@ -26,7 +26,7 @@ const AddInc = () => {
         <Container>
             {showForm ? (
                 <>
-                    <Link to={"/"} style={{ textDecoration: "none" }}><TitleG>Incidencias BBRAUN</TitleG></Link>
+                    <Link to={"/home"} style={{ textDecoration: "none" }}><TitleG>Incidencias BBRAUN</TitleG></Link>
                     <Formulario
                         setShowForm={setShowForm}
                         setExito={setExito} />

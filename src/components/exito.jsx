@@ -23,7 +23,7 @@ const Exito = ({ setShowForm }) => {
             fetchComplete: false
           });
           
-        navigate("/")
+        navigate("/home")
     }
 
     const handleRegister = (event) => {
