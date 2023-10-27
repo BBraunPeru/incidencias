@@ -3,6 +3,9 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useAppContext } from "../ContexProvider";
 import { useEffect, useState } from "react";
+import { Container } from "@mui/material";
+import { ContainerCenter, ContainerTop } from "../components/elements";
+import hexToRgba from "hex-to-rgba";
 
 const FloatingButton = styled.button`
     position: fixed;
@@ -49,109 +52,132 @@ const HomeI = () => {
     const [state, setState] = useAppContext()
     const [searchTerm, setSearchTerm] = useState('');
     const objetCurrentUser = localStorage.getItem("currentUser");
-    const currentUser = JSON.parse(objetCurrentUser); 
-    console.log(currentUser.name)
+    const currentUser = JSON.parse(objetCurrentUser);
+    const textIfNull = currentUser.roll === "representante" ? "Usted no tiene incidencias reportadas, puebe agregando una" : "Usted no tiene incidencias asignadas"
+    let datosFiltrados;
+
 
     useEffect(() => {
         if (!state.fetchComplete) {
-            fetch("https://api.steinhq.com/v1/storages/65241cfec5ad5604ce1ef385/Incidencias")
-                .then((response) => {
-                    if (!response.ok) {
-                        throw new Error('Hubo un problema con la petición Fetch: ' + response.status);
-                    }
-                    console.log(response)
-                    return response.json();
-                })
-                .then((data) => {
-                    setState({
-                        ...state,
-                        fetchComplete: true,
-                        datos: data
+            if (currentUser.roll !== "admin") {
+                fetch(`https://ssttapi.mibbraun.pe/incidencias/${currentUser.roll}/${currentUser.id}`)
+                    .then((response) => {
+                        if (!response.ok) {
+                            throw new Error('Hubo un problema con la petición Fetch: ' + response.status);
+                        }
+
+                        return response.json();
+                    })
+                    .then((data) => {
+                        console.log(data);
+                        setState({
+                            ...state,
+                            fetchComplete: true,
+                            datos: data
+                        });
+                    })
+                    .catch((error) => {
+                        console.error(error);
+                        alert(error); // Muestra un pop-up de error
                     });
-                })
-                .catch((error) => {
-                    console.error(error);
-                    alert(error); // Muestra un pop-up de error
-                });
+            } else {
+                fetch(`https://ssttapi.mibbraun.pe/incidencias`)
+                    .then((response) => {
+                        if (!response.ok) {
+                            throw new Error('Hubo un problema con la petición Fetch: ' + response.status);
+                        }
+
+                        return response.json();
+                    })
+                    .then((data) => {
+                        console.log(data);
+                        setState({
+                            ...state,
+                            fetchComplete: true,
+                            datos: data
+                        });
+                    })
+                    .catch((error) => {
+                        console.error(error);
+                        alert(error); // Muestra un pop-up de error
+                    });
+            }
+
         }
-    }, [state, setState]);
+    }, [state, setState, currentUser]);
+
+
 
     const datos = state.datos;
     if (!datos) {
-        return <p>Cargando datos...</p>;
+        return (<ContainerCenter>
+            <p>Cargando datos...</p>;
+        </ContainerCenter>)
     }
 
-    const datosInvertidos = [...datos].reverse().filter(fila => fila.INSTITUCION.toLowerCase().includes(searchTerm.toLowerCase()));
+    const datosInvertidos = [...datos].reverse().filter(fila => fila.institucion.toLowerCase().includes(searchTerm.toLowerCase()));
 
-    let datosFiltrados;
     if (currentUser.roll === "representante") {
-        datosFiltrados = [...datosInvertidos].filter(fila => currentUser.name.toLocaleLowerCase() === fila.REPORTER.toLocaleLowerCase())
+        datosFiltrados = [...datosInvertidos].filter(fila => currentUser.id === fila.reporter_id)
 
     }
     else if (currentUser.roll === "tecnico") {
         datosFiltrados = [...datosInvertidos].filter(fila => {
-            if (fila.RESPONSABLE) {
-              return currentUser.name.toLowerCase() === fila.RESPONSABLE.toLowerCase();
+            if (fila.responsable_id) {
+                return currentUser.id === fila.responsable_id;
             }
             return false; // Si fila.RESPONSABLE es nulo, excluimos esta fila
-          });
-          
+        });
+
     }
     else {
         datosFiltrados = [...datosInvertidos]
     }
     // const datosFiltrados = [...datosInvertidos]
-    const cabeceras = Object.keys(datos[0])
     const handleSwitch = (e) => {
         navigate("/add")
     }
 
     return (
+        datos.length > 0 ? (
+            <ContainerTop>
+                <ContainerIncidencias >
+                    <input
+                        type="text"
+                        placeholder="Buscar por institución..."
+                        onChange={event => setSearchTerm(event.target.value)}
+                        style={{
+                            padding: "0 1rem",
+                            height: "3.5rem",
+                            width: "100%",
+                            fontSize: "16px",
+                            borderRadius: ".4rem",
+                            border: "none",
+                            boxSizing: "border-box",
+                            backgroundColor:hexToRgba("#0000FF",0.1)
+                        }} />
+                    {
+                        datosFiltrados.map((fila, i) => {
+                            return (
+                                <Incidente key={i}
+                                    data={fila}
+                                    currentUser={currentUser}
+                                />
+                            )
+                        })
+                    }
+                    
+                    {
+                        currentUser.roll !== "tecnico" && (
+                            <FloatingButton style={{ scale: "1.5" }} onClick={handleSwitch}>+</FloatingButton>
+                        )
+                    }
+                </ContainerIncidencias>
+            </ContainerTop>
+        ) : <Container sx={{ backgroundColor: "#58178355", textAlign: "center", borderColor: "#44086b", borderRadius: ".3rem", margin: "1rem" }}>
+            <p style={{ fontWeight: "bold", fontSize: "18px" }}>{textIfNull} </p>
+        </Container>
 
-        <ContainerIncidencias >
-            <input
-                type="text"
-                placeholder="Buscar por institución..."
-                onChange={event => setSearchTerm(event.target.value)}
-                style={{
-                    padding: "0 1rem",
-                    height: "3.5rem",
-                    width: "100%",
-                    fontSize: "16px",
-                    borderRadius: ".4rem",
-                    border: "none",
-                    boxSizing: "border-box"
-                }} />
-            {
-                datosFiltrados.map((fila, i) => {
-                    return (
-                        <Incidente key={i}
-                            institucion={fila.INSTITUCION}
-                            servicio={fila.SERVICIO}
-                            tipo={fila.TIPO}
-                            detalle={fila.FALL}
-                            reprecentante={fila.REPORTER}
-                            contacto={fila.CONTACTO}
-                            celular={fila.CELULAR}
-                            correo={fila.CORREO}
-                            fechaReporte={fila.FECHA_REPORTE}
-                            fechaRevision={fila.FECHA_REVISION}
-                            responsable={fila.RESPONSABLE}
-                            turno={fila.TURNO}
-                            estadoFinal={fila.ESTADO_FINAL}
-                            estadoAtencion={fila.ATENCION}
-                            cabeceras={cabeceras}
-                        />
-                    )
-                })
-            }
-
-            {
-                currentUser.roll !== "tecnico" && (
-                    <FloatingButton style={{ scale: "1.5" }} onClick={handleSwitch}>+</FloatingButton>
-                )
-            }
-        </ContainerIncidencias>
     )
 
 }

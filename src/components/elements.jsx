@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import { Autocomplete, TextField } from "@mui/material";
 import { useAppContext } from "../ContexProvider";
 import { SelectContainer } from "./views";
+import styled from "styled-components";
 
-export const ColorBorderTextField = ({ type, label, llave,required,pattern }) => {
+export const ColorBorderTextField = ({ type, label, llave, required, pattern }) => {
   const [state, setState] = useAppContext();
   const handleChange = (e) => {
     setState((prevState) => ({
@@ -14,16 +15,16 @@ export const ColorBorderTextField = ({ type, label, llave,required,pattern }) =>
   return (
     <TextField
       style={{ margin: "10px 0" }}
-      value={state[llave] || ""} 
+      value={state[llave] || ""}
       label={label}
       type={type}
       onChange={handleChange}
       placeholder={label}
       variant="outlined"
       inputProps={{
-        pattern:pattern,
+        pattern: pattern,
       }}
-      required = {required}
+      required={required}
     />
   );
 };
@@ -34,28 +35,63 @@ export const DropdownFilter = ({ data, llave, placeholder }) => {
   const [state, setState] = useAppContext();
 
   useEffect(() => {
-    setOptions(data);
+    if (Array.isArray(data)) { // Verifica si data es un array
+      setOptions(data);
+    }
   }, [data]);
 
   const handleChange = (event, newValue) => {
+    console.log(state)
     setState((prevState) => ({
       ...prevState,
-      [llave]: newValue,
+      [llave]: newValue.id,
     }));
   };
 
   return (
     <SelectContainer>
-    <Autocomplete
-      style={{ margin: "5px 0" }}
-      value={state[llave] || ""}
-      aria-required
-      onChange={handleChange}
-      options={options}
-      freeSolo
-      renderInput={(params) => <TextField {...params} label={placeholder} required/>}
-    />
-  </SelectContainer>
+      <Autocomplete
+        style={{ margin: "5px 0" }}
+        value={options[state[llave]-1] || ""}
+        onChange={handleChange}
+        options={options}
+        getOptionLabel={(option) => option[llave]|| ''}
+        freeSolo
+        disableClearable
+        renderInput={(params) => <TextField {...params} label={placeholder} required />}
+      />
+    </SelectContainer>
 
   );
 };
+
+
+// Define un styled component para la capa de fondo semitransparente
+export const SpinnerOverlay = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+`;
+
+export const ContainerCenter=styled.div`
+  width: 100%;
+  display: flex;
+  height: 100vh;
+  align-items: center;
+  justify-content: center;
+`
+
+export const ContainerTop = styled.div`
+  width: 100%;
+  display: flex;
+  min-height: 100vh;
+  align-items: top;
+  justify-content: center;
+`

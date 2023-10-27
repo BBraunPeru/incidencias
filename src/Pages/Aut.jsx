@@ -1,17 +1,16 @@
 import React, { useState } from 'react';
 import { Button, TextField, Typography, Avatar, Modal } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import styled from 'styled-components';
-import Users from "../data/users.json"
 import { useNavigate } from 'react-router-dom';
-
-
+import styled from 'styled-components';
+import { ContainerCenter, SpinnerOverlay } from '../components/elements';
+import { TailSpin } from 'react-loader-spinner';
 const ContainerLogin = styled.div`
     display: flex;
     flex-direction: column;
     gap: 1rem;
     align-items: center;
-    width: 90%;
+    width: 95%;
     padding: 1rem;
     background-color: white;
     box-sizing: border-box;
@@ -25,19 +24,10 @@ const Aut = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [errorPopupOpen, setErrorPopupOpen] = useState(false);
+    const [textError, setTextError] = useState("Usuario o contraseña no válidos.")
+    const [loading, setLoading] = useState(false);
 
     const navigate = useNavigate()
-
-
-    function autenticarUsuario(username, password) {
-        // Simula la autenticación de usuario
-        const usuario = Users.find((user) => user.username === username && user.password === password);
-        if (usuario) {
-            return { success: true, userId: usuario.id };
-        } else {
-            return { success: false, userId: null };
-        }
-    }
 
     const handleEmailChange = (event) => {
         setUsername(event.target.value);
@@ -48,92 +38,114 @@ const Aut = () => {
     };
 
     const handleLogin = () => {
-        const result = autenticarUsuario(username, password);
-        if (result.success) {
-            // Autenticación exitosa, establece el "id" del usuario autenticado.
-            const currentUser = JSON.stringify(Users.find(user => user.id === result.userId));
-
-            // Guardar la cadena JSON en el localStorage con una clave específica
-            localStorage.setItem('currentUser', currentUser);
-
-            // setState({
-            //     ...state,
-            //     currentUserId: result.userId
-            // })
-
-            console.log('Autenticación exitosa para el usuario con ID:', result.userId);
-            navigate('/home')
-
-        } else {
-            // Autenticación fallida, muestra el mensaje de error en el popup.
-            setErrorPopupOpen(true);
-        }
+        setLoading(true);
+        fetch("https://ssttapi.mibbraun.pe/login", {
+            method: 'POST',
+            mode: "cors",
+            headers: {
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify({
+                "username": username,
+                "password": password
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.id > 0) {
+                    var objetoJSON = JSON.stringify(data);
+                    // Guardar la cadena JSON en localStorage
+                    localStorage.setItem("currentUser", objetoJSON);
+                    setLoading(false);
+                    console.log(data)
+                    navigate('/home')
+                } else {
+                    setTextError("Usuario no registrado")
+                    setErrorPopupOpen(true);
+                }
+            })
+            .catch(error => {
+                setTextError("Usuario o contraseña incorrectos")
+                setErrorPopupOpen(true);
+            });
     };
 
     const closeErrorPopup = () => {
         setErrorPopupOpen(false);
     };
     return (
-        <ContainerLogin>
-            <Avatar>
-                <LockOutlinedIcon />
-            </Avatar>
-            <Typography variant="h5">Iniciar sesión</Typography>
-            <form>
-                <TextField
-                    variant="outlined"
-                    margin="normal"
-                    required
-                    fullWidth
-                    id="username"
-                    label="Usuario"
-                    name="username"
-                    autoComplete="email"
-                    value={username}
-                    onChange={handleEmailChange}
-                />
+        <ContainerCenter>
+            <ContainerLogin>
+                <Avatar>
+                    <LockOutlinedIcon />
+                </Avatar>
+                <Typography variant="h5">Iniciar sesión</Typography>
+                <form>
+                    <TextField
+                        variant="outlined"
+                        margin="normal"
+                        required
+                        fullWidth
+                        id="username"
+                        label="Usuario"
+                        name="username"
+                        autoComplete="email"
+                        value={username}
+                        onChange={handleEmailChange}
+                    />
 
-                <TextField
-                    variant="outlined"
-                    margin="normal"
-                    required
-                    fullWidth
-                    name="password"
-                    label="Contraseña"
-                    type="password"
-                    id="password"
-                    autoComplete="current-password"
-                    value={password}
-                    onChange={handlePasswordChange}
-                />
-                <Button style={{ marginTop: "1rem", padding: ".7rem", fontWeight: "bold" }}
-                    type="button"
-                    fullWidth
-                    variant="contained"
-                    color="primary"
-                    onClick={handleLogin}
-                >
-                    Iniciar sesión
-                </Button>
-            </form>
+                    <TextField
+                        variant="outlined"
+                        margin="normal"
+                        required
+                        fullWidth
+                        name="password"
+                        label="Contraseña"
+                        type="password"
+                        id="password"
+                        autoComplete="current-password"
+                        value={password}
+                        onChange={handlePasswordChange}
+                    />
+                    <Button style={{ marginTop: "1rem", padding: ".7rem", fontWeight: "bold" }}
+                        type="button"
+                        fullWidth
+                        variant="contained"
+                        color="primary"
+                        onClick={handleLogin}
+                    >
+                        Iniciar sesión
+                    </Button>
+                </form>
 
-            <Modal open={errorPopupOpen} onClose={closeErrorPopup}>
-                <div style={{
-                    position: 'absolute',
-                    top: '50%',
-                    left: '50%',
-                    transform: 'translate(-50%, -50%)',
-                    background: 'white',
-                    padding: '16px',
-                    textAlign: 'center',
-                    boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2)',
-                    borderRadius: '10px',
-                }}>
-                    <Typography variant="h6" color="error">Usuario o contraseña no válidos.</Typography>
-                    <Button variant="contained" color="primary" onClick={closeErrorPopup}>Cerrar</Button>
-                </div>
-            </Modal>
-        </ContainerLogin>
+                <Modal open={errorPopupOpen} onClose={closeErrorPopup}>
+                    <div style={{
+                        position: 'absolute',
+                        top: '50%',
+                        left: '50%',
+                        transform: 'translate(-50%, -50%)',
+                        background: 'white',
+                        padding: '16px',
+                        textAlign: 'center',
+                        boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2)',
+                        borderRadius: '10px',
+                    }}>
+                        <Typography variant="h6" color="error">{textError}</Typography>
+                        <Button variant="contained" color="primary" onClick={closeErrorPopup}>Cerrar</Button>
+                    </div>
+                </Modal>
+
+                {loading && (
+                    <SpinnerOverlay>
+                        <TailSpin
+                            color="#007BFF"
+                            height={50}
+                            width={50}
+                        />
+                    </SpinnerOverlay>
+                )}
+            </ContainerLogin>
+        </ContainerCenter>
     );
 };
 
