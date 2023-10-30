@@ -100,6 +100,7 @@ const Formulario = ({ setShowForm, setExito }) => {
                     <DropdownFilter data={servicios} llave="servicio" placeholder="Servicio" required />
                     <DropdownFilter data={tipos} llave="tipo" placeholder="Tipo" required />
                     <ColorBorderTextField type="text" label="Detalle el Incidente" llave="fall" required />
+                    
                     {
                         showReporter && (
                             <DropdownFilter data={Reporters} llave="reporter" placeholder="Reprecentante" required />

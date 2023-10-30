@@ -35,13 +35,10 @@ export const DropdownFilter = ({ data, llave, placeholder }) => {
   const [state, setState] = useAppContext();
 
   useEffect(() => {
-    if (Array.isArray(data)) { // Verifica si data es un array
-      setOptions(data);
-    }
+    setOptions(data);
   }, [data]);
 
   const handleChange = (event, newValue) => {
-    console.log(state)
     setState((prevState) => ({
       ...prevState,
       [llave]: newValue.id,
@@ -52,10 +49,10 @@ export const DropdownFilter = ({ data, llave, placeholder }) => {
     <SelectContainer>
       <Autocomplete
         style={{ margin: "5px 0" }}
-        value={options[state[llave]-1] || ""}
+        value={options[state[llave] - 1] || ""}
         onChange={handleChange}
         options={options}
-        getOptionLabel={(option) => option[llave]|| ''}
+        getOptionLabel={(option) => option[llave] || ''}
         freeSolo
         disableClearable
         renderInput={(params) => <TextField {...params} label={placeholder} required />}
@@ -80,18 +77,16 @@ export const SpinnerOverlay = styled.div`
   z-index: 2;
 `;
 
-export const ContainerCenter=styled.div`
-  width: 100%;
-  display: flex;
-  height: 100vh;
-  align-items: center;
-  justify-content: center;
-`
 
-export const ContainerTop = styled.div`
-  width: 100%;
-  display: flex;
-  min-height: 100vh;
-  align-items: top;
-  justify-content: center;
+export const InputSearch = styled.input`
+  padding: 0 1rem;
+  flex: 2;
+  height: 3rem;
+  font-size: 16px;
+  border-radius: .4rem;
+  border: none;
+  box-sizing: border-box;
+  @media(min-width: 920px) {
+    flex:3;
+} 
 `

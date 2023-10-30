@@ -1,8 +1,8 @@
 export const Colors = {
-    "atendido":"#00ba37",
-    "porasignar":"#ffffff",
-    "asignado":"ffff00",
-    "pendiente":"ffA500",
-    "cancelado":"ff8085"
+    "atendido":"#00ba37",//verde
+    "porasignar":"#ffffff",//blanco
+    "asignado":"#E20FBF",//amarillo
+    "pendiente":"#ec6711",//naranja
+    "cancelado":"#FF333C"//rojo
 }
 

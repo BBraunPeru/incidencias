@@ -2,24 +2,10 @@ import React, { useState } from 'react';
 import { Button, TextField, Typography, Avatar, Modal } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
-import { ContainerCenter, SpinnerOverlay } from '../components/elements';
+import {SpinnerOverlay } from '../components/elements';
 import { TailSpin } from 'react-loader-spinner';
-const ContainerLogin = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    align-items: center;
-    width: 95%;
-    padding: 1rem;
-    background-color: white;
-    box-sizing: border-box;
-    border-radius: .3rem;
-    box-shadow: 0 0 5px 5px rgba(0,0,0,.1);
-    @media (min-width:500px){
-        width: 500px;
-    }
-`
+import { ContainerCenter, ContainerLogin } from '../components/views';
+
 const Aut = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');

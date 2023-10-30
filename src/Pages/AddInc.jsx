@@ -1,4 +1,4 @@
-import { Container, TitleG } from "../components/views"
+import {TitleG,MyContainer } from "../components/views"
 import Formulario from "../components/formulario"
 import { useState } from "react"
 import Exito from "../components/exito"
@@ -23,7 +23,7 @@ const AddInc = () => {
 
 
     return (
-        <Container>
+        <MyContainer>
             {showForm ? (
                 <>
                     <Link to={"/home"} style={{ textDecoration: "none" }}><TitleG>Incidencias BBRAUN</TitleG></Link>
@@ -41,7 +41,7 @@ const AddInc = () => {
                     />
                 )
             )}
-        </Container>
+        </MyContainer>
     )
 }
 

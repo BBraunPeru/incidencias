@@ -13,6 +13,7 @@ export const MyProvider = ({ children }) => {
     contacto: "",
     celular: "",
     email: "",
+    responsable : null,
     fetchComplete:false,
     datos:null
   });
