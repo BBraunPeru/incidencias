@@ -9,11 +9,12 @@ import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import PersonIcon from '@mui/icons-material/Person';
 import SaveIcon from '@mui/icons-material/Save';
+import LockIcon from '@mui/icons-material/Lock';
 
 
 const ContainerIcidencia = styled.div`
     width: 100%;
-    border:.2rem solid ${({ bgcolor }) => bgcolor};
+    border:.1rem solid ${({ bgcolor }) => bgcolor};
     background-color: ${({ bgcolor }) => hexToRgba(bgcolor, .5)};
     border-radius: .5rem;
     padding: 1rem;
@@ -53,7 +54,6 @@ const DetalleTitle = styled.p`
 const Incidente = ({ data, currentUser, responsables }) => {
 
     const tecnicos = [...responsables].map(item => ({ id: item.id, label: item.nombres + " " + item.apellidos }));
-    console.log(tecnicos)
     const modalStyle = {
         display: 'flex',
         justifyContent: 'center',
@@ -78,7 +78,6 @@ const Incidente = ({ data, currentUser, responsables }) => {
     const [selectedValue, setSelectedValue] = useState("");
     const [isModalOpen, setModalOpen] = useState(false);
     const [estado, setEstado] = useState(data.estado);
-    const [selectedResponsable, setSelectedResponsable] = useState(null);
     const [showResp, setShowResp] = useState(false)
     const [responsable, setResponsable] = useState(null)
 
@@ -118,18 +117,16 @@ const Incidente = ({ data, currentUser, responsables }) => {
     if (currentUser.roll === "representante") {
         datos[3] = ""
     }
-    if (currentUser.roll !== "representante") {
+    if (currentUser.roll === "tecnico") {
         datos[8] = ""
         datos[datos.length - 1] = ""
     }
 
-    const updateState = (key, newState) => {
+    const updateFieldInc = (key, newState) => {
         console.log(`Actulizando incidencia con id ${data.id} a ${newState}`)
         const apiUrl = `https://ssttapi.mibbraun.pe/incidencias/${data.id}`; // Agrega el ID al final de la URL.
 
         const dataUdated = { [key]: newState };
-        setEstado(newState)
-
         fetch(apiUrl, {
             method: 'PATCH', // O utiliza 'PATCH' si prefieres una actualización parcial.
             headers: {
@@ -140,11 +137,11 @@ const Incidente = ({ data, currentUser, responsables }) => {
             .then((response) => {
                 if (response.ok) {
                     // La solicitud se completó con éxito.
-                    console.log(`Campo "estado" actualizado con éxito para el elemento con ID ${data.id}.`);
+                    console.log(`Campo actualizado con éxito para el elemento con ID ${data.id}.`);
                     // Puedes realizar acciones adicionales aquí, si es necesario.
                 } else {
                     // La solicitud no se completó con éxito. Puedes manejar errores aquí.
-                    console.error(`Error al actualizar el campo "estado" para el elemento con ID ${data.id}.`);
+                    console.error(`Error al actualizar para el elemento con ID ${data.id}.`);
                 }
             })
             .catch((error) => {
@@ -154,19 +151,30 @@ const Incidente = ({ data, currentUser, responsables }) => {
     }
     const handleConfirm = () => {
         setModalOpen(false);
-        updateState("estado", selectedValue)
+        updateFieldInc("estado", selectedValue)
+        setEstado(selectedValue)
     };
 
     const handleSelectResponsable = (e) => {
         console.log(data.id)
-        setShowResp(true)
+        setShowResp(!showResp)
 
     }
 
-    const AsignResp = ()=>{
-        updateState("responsable_id",responsable.id)
+    const AsignResp = () => {
+        console.log(`Asignando a tecnico con id ${responsable.id}`)
+        updateFieldInc("responsable_id", responsable.id)
+        updateFieldInc("estado","ASIGNADO")
+        setEstado("ASIGNADO")
+        setShowResp(false)
+
     }
 
+    const handleUpdateState = (e)=> {
+        console.log("ACTUALIZANDO ESTADO")
+        updateFieldInc("estado","ASIGNADO")
+        setEstado("ASIGNADO")
+    }
     return (
         <ContainerIcidencia bgcolor={bgColor}>
             <div style={{ width: "100%", display: "flex", gap: "1rem", alignItems: "center", justifyContent: "space-between" }}>
@@ -182,36 +190,51 @@ const Incidente = ({ data, currentUser, responsables }) => {
                     ) : (
                         <>
                             <Title onClick={handleShowDetail}>{data.institucion}</Title>
-                            <IconButton onClick={handleSelectResponsable} color="primary" sx={{ backgroundColor: hexToRgba("#0000FF", 0.2) }}>
-                                <PersonIcon style={{ scale: "1.3" }} />
-                            </IconButton>
+                            {
+                                estado === "POR ASIGNAR" ? (
+                                    <IconButton onClick={handleSelectResponsable} color="primary" sx={{ backgroundColor: hexToRgba("#0000FF", 0.2) }}>
+                                        <PersonIcon style={{ scale: "1.3" }} />
+                                    </IconButton>
+                                ):(
+                                    estado === "ATENDIDO" ? (
+                                        <IconButton onClick={handleUpdateState}>
+                                            <LockIcon style={{ scale: "1.3" }}/>
+                                        </IconButton>
+                                    ):(
+                                        <></>
+                                    )
+                                )
+
+                                
+                            }
                         </>
                     )
                 }
             </div>
             {
                 (showResp) && (
-                    <div style={{display:"flex",gap:"1rem",width:"100%",justifyContent:"space-between"}}>
+                    <div style={{ display: "flex", gap: "1rem", width: "100%", justifyContent: "space-between" }}>
                         <Autocomplete
-                        sx={{flex:6}}
-                        options={tecnicos}
-                        getOptionLabel={(option) => option.label}
-                        value={selectedResponsable}
-                        onChange={(_, newValue) => {
-                            setSelectedResponsable(newValue);
-                        }}
-                        isOptionEqualToValue={(option, value) => option.id === value.id}
-                        renderInput={(params) => (
-                            <TextField
-                                {...params}
-                                label="Selecciona un nombre"
-                                variant="outlined"
-                            />
-                        )}
-                    />
-                    <IconButton onClick={AsignResp} style={{flex:1}} >
-                        <SaveIcon style={{ scale: "1.3" }} />
-                    </IconButton>
+                            sx={{ flex: 6 }}
+                            options={tecnicos}
+                            getOptionLabel={(option) => option.label}
+                            value={responsable}
+                            onChange={(_, newValue) => {
+                                setResponsable(newValue);
+                                console.log(newValue)
+                            }}
+                            isOptionEqualToValue={(option, value) => option.id === value.id}
+                            renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    label="Selecciona un nombre"
+                                    variant="outlined"
+                                />
+                            )}
+                        />
+                        <IconButton onClick={AsignResp} style={{ flex: 1 }} >
+                            <SaveIcon style={{ scale: "1.3" }} />
+                        </IconButton>
                     </div>
 
                 )
@@ -252,25 +275,34 @@ const Incidente = ({ data, currentUser, responsables }) => {
                                     onChange={handleChangeState}
                                     sx={{ display: "flex", justifyContent: "space-between" }}
                                 >
+                                    {
+                                        currentUser.roll !== "admin" ? (
+                                            <>
+                                                <FormControlLabel
+                                                    value="ATENDIDO"
+                                                    control={<Radio color="primary" />}
+                                                    label="Atendido"
+                                                    labelPlacement="top"
+                                                />
+                                                <FormControlLabel
+                                                    value="PENDIENTE"
+                                                    control={<Radio color="primary" />}
+                                                    label="Pendiente"
+                                                    labelPlacement="top"
+                                                />
+                                            </>
+                                        ) : (
+                                            <FormControlLabel
+                                                value="CANCELADO"
+                                                control={<Radio color="primary" />}
+                                                label="Cancelado"
+                                                labelPlacement="top"
+                                            />
+                                        )
+                                    }
 
-                                    <FormControlLabel
-                                        value="ATENDIDO"
-                                        control={<Radio color="primary" />}
-                                        label="Atendido"
-                                        labelPlacement="top"
-                                    />
-                                    <FormControlLabel
-                                        value="PENDIENTE"
-                                        control={<Radio color="primary" />}
-                                        label="Pendiente"
-                                        labelPlacement="top"
-                                    />
-                                    <FormControlLabel
-                                        value="CANCELADO"
-                                        control={<Radio color="primary" />}
-                                        label="Cancelado"
-                                        labelPlacement="top"
-                                    />
+
+
 
                                 </RadioGroup>
                             </FormControl>

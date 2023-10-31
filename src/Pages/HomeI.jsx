@@ -32,7 +32,6 @@ const HomeI = () => {
                         return response.json();
                     })
                     .then((data) => {
-                        console.log(data);
                         setState({
                             ...state,
                             fetchComplete: true,
@@ -70,7 +69,6 @@ const HomeI = () => {
                         return response.json();
                     })
                     .then((data) => {
-                        console.log(data);
                         setState({
                             ...state,
                             fetchComplete: true,
